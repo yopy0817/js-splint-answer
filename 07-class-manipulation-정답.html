@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 7: 클래스 조작</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .box { 
+            padding: 20px; 
+            margin: 10px; 
+            border: 2px solid #333;
+            transition: all 0.3s ease;
+        }
+        .highlight { background-color: yellow; }
+        .error { background-color: red; color: white; }
+        .success { background-color: green; color: white; }
+        .large { font-size: 24px; }
+    </style>
+</head>
+<body>
+    <h1>실습 7: 클래스 조작</h1>
+    <p>버튼을 클릭하여 박스의 클래스를 조작해보세요.</p>
+    
+    <button id="addBtn">highlight 클래스 추가</button>
+    <button id="removeBtn">highlight 클래스 제거</button>
+    <button id="toggleBtn">large 클래스 토글</button>
+    <button id="replaceBtn">box를 success로 교체</button>
+    
+    <div id="target" class="box">클래스를 조작할 박스</div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const addBtn = document.getElementById('addBtn');
+        const removeBtn = document.getElementById('removeBtn');
+        const toggleBtn = document.getElementById('toggleBtn');
+        const replaceBtn = document.getElementById('replaceBtn');
+        const target = document.getElementById('target');
+        
+        // addBtn: 'highlight' 클래스를 추가
+        addBtn.addEventListener('click', function() {
+            target.classList.add('highlight');
+        });
+        
+        // removeBtn: 'highlight' 클래스를 제거
+        removeBtn.addEventListener('click', function() {
+            target.classList.remove('highlight');
+        });
+        
+        // toggleBtn: 'large' 클래스를 토글 (있으면 제거, 없으면 추가)
+        toggleBtn.addEventListener('click', function() {
+            target.classList.toggle('large');
+        });
+        
+        // replaceBtn: 'box' 클래스를 'success' 클래스로 교체
+        replaceBtn.addEventListener('click', function() {
+            target.classList.replace('box', 'success');
+        });
+    </script>
+</body>
+</html>

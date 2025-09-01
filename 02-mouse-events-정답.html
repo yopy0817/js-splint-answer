@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 스프린트 02 - 마우스 이벤트</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        .box { width: 200px; height: 100px; border: 2px solid #333; margin: 20px; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DOM 스프린트 02 - 마우스 이벤트</h1>
+        <p>박스에 마우스를 올리고 클릭해보세요.</p>
+        
+        <div id="mouseBox" class="box">마우스 이벤트 박스</div>
+        <div id="result">이벤트 결과가 여기에 표시됩니다</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const mouseBox = document.getElementById('mouseBox');
+        const result = document.getElementById('result');
+        
+        // 1. mouseenter - 마우스가 요소 위로 올라갈 때
+        mouseBox.addEventListener('mouseenter', function() {
+            result.textContent = '마우스가 박스 위로 올라왔습니다!';
+        });
+        
+        // 2. mouseleave - 마우스가 요소를 벗어날 때
+        mouseBox.addEventListener('mouseleave', function() {
+            result.textContent = '마우스가 박스를 벗어났습니다!';
+        });
+        
+        // 3. click - 마우스 클릭할 때
+        mouseBox.addEventListener('click', function() {
+            result.textContent = '박스를 클릭했습니다!';
+        });
+    </script>
+</body>
+</html>

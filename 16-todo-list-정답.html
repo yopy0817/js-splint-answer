@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 16: 할 일 목록</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .todo-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin: 10px 0;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .todo-item.completed {
+            background-color: #e8f5e8;
+            border-left-color: #28a745;
+            opacity: 0.7;
+        }
+        .todo-content {
+            flex: 1;
+            margin-left: 15px;
+        }
+        .todo-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .todo-actions {
+            display: flex;
+            gap: 5px;
+        }
+        .checkbox {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .stat-item {
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 24px;
+            font-weight: bold;
+            color: #007bff;
+        }
+        .stat-label {
+            font-size: 12px;
+            color: #666;
+        }
+        .empty-message {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📝 할 일 목록</h1>
+        
+        <!-- 통계 -->
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number" id="totalCount">0</div>
+                <div class="stat-label">전체</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="completedCount">0</div>
+                <div class="stat-label">완료</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number" id="pendingCount">0</div>
+                <div class="stat-label">대기</div>
+            </div>
+        </div>
+
+        <!-- 할 일 추가 폼 -->
+        <form id="todoForm">
+            <div class="form-group">
+                <input type="text" id="todoTitle" placeholder="할 일 제목" required>
+            </div>
+            <button type="submit" class="btn-primary">할 일 추가</button>
+        </form>
+
+        <!-- 할 일 목록 -->
+        <div id="todoList">
+            <div class="empty-message">할 일이 없습니다. 새로운 할 일을 추가해보세요!</div>
+        </div>
+
+        <!-- 전체 관리 버튼 -->
+        <div style="text-align: center; margin-top: 20px;">
+            <button class="btn-success" id="completeAllBtn">모두 완료</button>
+            <button class="btn-danger" id="clearAllBtn">모든 항목 삭제</button>
+        </div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const todoForm = document.getElementById('todoForm');
+        const todoTitle = document.getElementById('todoTitle');
+        const todoList = document.getElementById('todoList');
+        const totalCount = document.getElementById('totalCount');
+        const completedCount = document.getElementById('completedCount');
+        const pendingCount = document.getElementById('pendingCount');
+        const completeAllBtn = document.getElementById('completeAllBtn');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        
+        // 할 일 배열
+        let todos = [];
+        
+        // 통계 업데이트 함수
+        function updateStats() {
+            const total = todos.length;
+            const completed = todos.filter(todo => todo.completed).length;
+            const pending = total - completed;
+            
+            totalCount.textContent = total;
+            completedCount.textContent = completed;
+            pendingCount.textContent = pending;
+        }
+        
+        // 할 일 목록 표시 함수
+        function displayTodos() {
+            if (todos.length === 0) {
+                todoList.innerHTML = '<div class="empty-message">할 일이 없습니다. 새로운 할 일을 추가해보세요!</div>';
+                return;
+            }
+            
+            todoList.innerHTML = '';
+            
+            todos.forEach((todo, index) => {
+                const todoItem = document.createElement('div');
+                todoItem.className = `todo-item ${todo.completed ? 'completed' : ''}`;
+                
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'checkbox';
+                checkbox.checked = todo.completed;
+                checkbox.addEventListener('change', () => toggleTodo(index));
+                
+                const todoContent = document.createElement('div');
+                todoContent.className = 'todo-content';
+                
+                const todoTitleElement = document.createElement('div');
+                todoTitleElement.className = 'todo-title';
+                todoTitleElement.textContent = todo.title;
+                
+                todoContent.appendChild(todoTitleElement);
+                
+                const todoActions = document.createElement('div');
+                todoActions.className = 'todo-actions';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-danger';
+                deleteBtn.textContent = '삭제';
+                deleteBtn.addEventListener('click', () => deleteTodo(index));
+                
+                todoActions.appendChild(deleteBtn);
+                
+                todoItem.appendChild(checkbox);
+                todoItem.appendChild(todoContent);
+                todoItem.appendChild(todoActions);
+                
+                todoList.appendChild(todoItem);
+            });
+        }
+        
+        // 할 일 토글 함수
+        function toggleTodo(index) {
+            todos[index].completed = !todos[index].completed;
+            displayTodos();
+            updateStats();
+        }
+        
+        // 할 일 삭제 함수
+        function deleteTodo(index) {
+            todos.splice(index, 1);
+            displayTodos();
+            updateStats();
+        }
+        
+        // 폼 제출 이벤트
+        todoForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = todoTitle.value.trim();
+            if (!title) return;
+            
+            const newTodo = {
+                title: title,
+                completed: false
+            };
+            
+            todos.push(newTodo);
+            displayTodos();
+            updateStats();
+            
+            todoForm.reset();
+        });
+        
+        // 모두 완료 버튼
+        completeAllBtn.addEventListener('click', function() {
+            todos.forEach(todo => todo.completed = true);
+            displayTodos();
+            updateStats();
+        });
+        
+        // 모든 항목 삭제 버튼
+        clearAllBtn.addEventListener('click', function() {
+            if (confirm('모든 할 일을 삭제하시겠습니까?')) {
+                todos = [];
+                displayTodos();
+                updateStats();
+            }
+        });
+        
+        // 초기화
+        displayTodos();
+        updateStats();
+    </script>
+</body>
+</html>
+
+

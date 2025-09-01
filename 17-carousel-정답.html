@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 17: 캐러셀</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .carousel-section {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .carousel-section h2 {
+            color: #555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            height: 100%;
+        }
+        .carousel-slide {
+            min-width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: white;
+            font-weight: bold;
+        }
+        .slide-1 { background-color: #007bff; }
+        .slide-2 { background-color: #28a745; }
+        .slide-3 { background-color: #dc3545; }
+
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .status {
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ 캐러셀</h1>
+        
+        <!-- 캐러셀 섹션 -->
+        <div class="carousel-section">
+            <h2>🖼️ 이미지 캐러셀</h2>
+            <div class="carousel-container" id="carousel">
+                <div class="carousel-track" id="carouselTrack">
+                    <div class="carousel-slide slide-1">1</div>
+                    <div class="carousel-slide slide-2">2</div>
+                    <div class="carousel-slide slide-3">3</div>
+                </div>
+            </div>
+            
+            <div class="status" id="carouselStatus">자동 재생 중...</div>
+            
+            <div class="controls">
+                <button class="btn-warning" id="stopBtn">정지</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const carouselTrack = document.getElementById('carouselTrack');
+        const carouselStatus = document.getElementById('carouselStatus');
+        const stopBtn = document.getElementById('stopBtn');
+        
+        // 캐러셀 변수
+        let currentSlide = 0;
+        let interval = null;
+        let isPlaying = true;
+        const totalSlides = 3;
+        
+        // 다음 슬라이드로 이동
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            const translateX = -currentSlide * 100;
+            carouselTrack.style.transform = `translateX(${translateX}%)`;
+
+        }
+        
+        // 자동 재생 시작
+        function startAutoPlay() {
+            interval = setInterval(nextSlide, 3000);
+            isPlaying = true;
+            carouselStatus.textContent = '자동 재생 중...';
+        }
+        
+        // 자동 재생 정지
+        function stopAutoPlay() {
+            clearInterval(interval);
+            isPlaying = false;
+            carouselStatus.textContent = '정지됨';
+        }
+        
+        // 정지 버튼 이벤트
+        stopBtn.addEventListener('click', function() {
+            if (isPlaying) {
+                stopAutoPlay();
+                this.textContent = '재생';
+            } else {
+                startAutoPlay();
+                this.textContent = '정지';
+            }
+        });
+        
+        // 초기화
+        startAutoPlay();
+    </script>
+</body>
+</html>
+
+

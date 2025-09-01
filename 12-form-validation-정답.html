@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 12: 폼 유효성 검사 - 정답</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        .error {
+            border-color: #dc3545 !important;
+            background-color: #fff5f5;
+        }
+        .success {
+            border-color: #28a745 !important;
+            background-color: #f8fff9;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        .success-message {
+            color: #28a745;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #6c757d;
+            cursor: not-allowed;
+        }
+        .requirements {
+            font-size: 12px;
+            color: #666;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>회원가입 폼</h1>
+        <form id="signupForm">
+            <div class="form-group">
+                <label for="username">사용자명</label>
+                <input type="text" id="username" name="username" placeholder="3-20자 영문, 숫자, 언더스코어">
+                <div class="error-message" id="username-error"></div>
+                <div class="requirements">사용자명은 3-20자 영문, 숫자, 언더스코어만 가능합니다.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email" name="email" placeholder="example@domain.com">
+                <div class="error-message" id="email-error"></div>
+                <div class="success-message" id="email-success">유효한 이메일 형식입니다.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">비밀번호</label>
+                <input type="password" id="password" name="password" placeholder="8자 이상, 영문+숫자+특수문자">
+                <div class="error-message" id="password-error"></div>
+                <div class="requirements">비밀번호는 8자 이상, 영문+숫자+특수문자를 포함해야 합니다.</div>
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">비밀번호 확인</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="비밀번호를 다시 입력하세요">
+                <div class="error-message" id="confirmPassword-error"></div>
+            </div>
+
+            <button type="submit" id="submitBtn">가입하기</button>
+        </form>
+
+        <div id="result" style="margin-top: 20px; padding: 15px; border-radius: 5px; display: none;"></div>
+    </div>
+
+    <script>
+        // 폼 요소들 가져오기
+        const form = document.getElementById('signupForm');
+        const username = document.getElementById('username');
+        const email = document.getElementById('email');
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirmPassword');
+        const submitBtn = document.getElementById('submitBtn');
+        const result = document.getElementById('result');
+
+        // 유효성 검사 규칙
+        const validationRules = {
+            username: {
+                regex: /^[a-zA-Z0-9_]{3,20}$/,
+                message: '사용자명은 3-20자 영문, 숫자, 언더스코어만 가능합니다.'
+            },
+            email: {
+                regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: '유효한 이메일 형식을 입력해주세요.'
+            },
+            password: {
+                regex: /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/,
+                message: '비밀번호는 8자 이상, 영문+숫자+특수문자를 포함해야 합니다.'
+            }
+        };
+
+        // 유효성 검사 함수
+        function validateField(field, rule) {
+            const value = field.value.trim();
+            const isValid = rule.regex.test(value);
+            
+            // 스타일 변경
+            if (isValid) {
+                field.classList.remove('error');
+                field.classList.add('success');
+            } else {
+                field.classList.remove('success');
+                field.classList.add('error');
+            }
+            
+            return isValid;
+        }
+
+        // 에러 메시지 표시/숨김 함수
+        function showError(fieldId, message) {
+            const errorElement = document.getElementById(fieldId + '-error');
+            if (errorElement) {
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+            }
+        }
+
+        function hideError(fieldId) {
+            const errorElement = document.getElementById(fieldId + '-error');
+            if (errorElement) {
+                errorElement.style.display = 'none';
+            }
+        }
+
+        function showSuccess(fieldId) {
+            const successElement = document.getElementById(fieldId + '-success');
+            if (successElement) {
+                successElement.style.display = 'block';
+            }
+        }
+
+        function hideSuccess(fieldId) {
+            const successElement = document.getElementById(fieldId + '-success');
+            if (successElement) {
+                successElement.style.display = 'none';
+            }
+        }
+
+        // 사용자명 유효성 검사
+        username.addEventListener('input', function() {
+            const isValid = validateField(this, validationRules.username);
+            if (isValid) {
+                hideError('username');
+            } else {
+                showError('username', validationRules.username.message);
+            }
+        });
+
+        // 이메일 유효성 검사
+        email.addEventListener('input', function() {
+            const isValid = validateField(this, validationRules.email);
+            if (isValid) {
+                hideError('email');
+                showSuccess('email');
+            } else {
+                showError('email', validationRules.email.message);
+                hideSuccess('email');
+            }
+        });
+
+        // 비밀번호 유효성 검사
+        password.addEventListener('input', function() {
+            const isValid = validateField(this, validationRules.password);
+            if (isValid) {
+                hideError('password');
+            } else {
+                showError('password', validationRules.password.message);
+            }
+            
+            // 비밀번호 확인 필드도 다시 검사
+            if (confirmPassword.value) {
+                validateConfirmPassword();
+            }
+        });
+
+        // 비밀번호 확인 유효성 검사
+        function validateConfirmPassword() {
+            const passwordValue = password.value;
+            const confirmValue = confirmPassword.value;
+            
+            if (confirmValue === '') {
+                confirmPassword.classList.remove('error', 'success');
+                hideError('confirmPassword');
+                return true;
+            }
+            
+            if (passwordValue === confirmValue) {
+                confirmPassword.classList.remove('error');
+                confirmPassword.classList.add('success');
+                hideError('confirmPassword');
+                return true;
+            } else {
+                confirmPassword.classList.remove('success');
+                confirmPassword.classList.add('error');
+                showError('confirmPassword', '비밀번호가 일치하지 않습니다.');
+                return false;
+            }
+        }
+
+        confirmPassword.addEventListener('input', validateConfirmPassword);
+
+        // 폼 제출 처리
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // 모든 필드 유효성 검사
+            const isUsernameValid = validateField(username, validationRules.username);
+            const isEmailValid = validateField(email, validationRules.email);
+            const isPasswordValid = validateField(password, validationRules.password);
+            const isConfirmPasswordValid = validateConfirmPassword();
+            
+            // 에러 메시지 표시
+            if (!isUsernameValid) {
+                showError('username', validationRules.username.message);
+            }
+            if (!isEmailValid) {
+                showError('email', validationRules.email.message);
+            }
+            if (!isPasswordValid) {
+                showError('password', validationRules.password.message);
+            }
+            if (!isConfirmPasswordValid) {
+                showError('confirmPassword', '비밀번호가 일치하지 않습니다.');
+            }
+            
+            // 모든 검사 통과 시 성공 메시지
+            if (isUsernameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid) {
+                result.innerHTML = `
+                    <div style="background-color: #d4edda; color: #155724; padding: 15px; border-radius: 5px; border: 1px solid #c3e6cb;">
+                        <h3>🎉 회원가입 성공!</h3>
+                        <p><strong>사용자명:</strong> ${username.value}</p>
+                        <p><strong>이메일:</strong> ${email.value}</p>
+                        <p>모든 정보가 유효합니다. 가입이 완료되었습니다!</p>
+                    </div>
+                `;
+                result.style.display = 'block';
+                
+                // 폼 초기화
+                form.reset();
+                username.classList.remove('success', 'error');
+                email.classList.remove('success', 'error');
+                password.classList.remove('success', 'error');
+                confirmPassword.classList.remove('success', 'error');
+                hideError('username');
+                hideError('email');
+                hideError('password');
+                hideError('confirmPassword');
+                hideSuccess('email');
+            } else {
+                result.innerHTML = `
+                    <div style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 5px; border: 1px solid #f5c6cb;">
+                        <h3>❌ 입력 오류</h3>
+                        <p>모든 필드를 올바르게 입력해주세요.</p>
+                    </div>
+                `;
+                result.style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html>

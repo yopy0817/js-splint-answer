@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 10: 요소 삭제</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .list { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+        .item { 
+            background-color: #f0f0f0; 
+            padding: 8px; 
+            margin: 5px; 
+            border-radius: 4px; 
+            cursor: pointer;
+        }
+        .item:hover { background-color: #e0e0e0; }
+    </style>
+</head>
+<body>
+    <h1>실습 10: 요소 삭제</h1>
+    <p>버튼을 클릭하거나 아이템을 클릭하여 요소를 삭제해보세요.</p>
+    
+    <button id="removeFirstBtn">첫 번째 삭제</button>
+    <button id="removeLastBtn">마지막 삭제</button>
+    <button id="removeAllBtn">모두 삭제</button>
+    
+    <div id="list" class="list">
+        <div class="item">삭제할 아이템 1</div>
+        <div class="item">삭제할 아이템 2</div>
+        <div class="item">삭제할 아이템 3</div>
+        <div class="item">삭제할 아이템 4</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const removeFirstBtn = document.getElementById('removeFirstBtn');
+        const removeLastBtn = document.getElementById('removeLastBtn');
+        const removeAllBtn = document.getElementById('removeAllBtn');
+        const list = document.getElementById('list');
+        
+        // removeFirstBtn: 첫 번째 아이템 삭제
+        removeFirstBtn.addEventListener('click', function() {
+            const firstItem = list.querySelector('.item');
+            if (firstItem) {
+                list.removeChild(firstItem);
+            }
+        });
+        
+        // removeLastBtn: 마지막 아이템 삭제
+        removeLastBtn.addEventListener('click', function() {
+            const items = list.querySelectorAll('.item');
+            if (items.length > 0) {
+                const lastItem = items[items.length - 1];
+                list.removeChild(lastItem);
+            }
+        });
+        
+        // removeAllBtn: 모든 아이템 삭제
+        removeAllBtn.addEventListener('click', function() {
+            const items = list.querySelectorAll('.item');
+            items.forEach(item => {
+                list.removeChild(item);
+            });
+        });
+        
+        // 아이템 클릭: 클릭한 아이템만 삭제
+        list.addEventListener('click', function(event) {
+            if (event.target.classList.contains('item')) {
+                event.target.remove();
+            }
+        });
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 스프린트 01 - 기본 이벤트</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ccc; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DOM 스프린트 01 - 기본 이벤트</h1>
+        <p>버튼을 클릭하면 "안녕하세요!" 메시지가 나타나도록 만들어보세요.</p>
+        
+        <button id="greetBtn">인사하기</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 1. getElementById로 버튼 요소를 가져오기
+        const greetBtn = document.getElementById('greetBtn');
+        const result = document.getElementById('result');
+        
+        // 2. addEventListener로 'click' 이벤트를 추가하기
+        greetBtn.addEventListener('click', function() {
+            // 3. result div에 메시지를 표시하기
+            result.textContent = '안녕하세요!';
+        });
+    </script>
+</body>
+</html>

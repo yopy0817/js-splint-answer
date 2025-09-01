@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 11: DOM 탐색</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .family-tree { border: 1px solid #ccc; padding: 15px; margin: 10px; }
+        .parent { 
+            background-color: #e3f2fd; 
+            padding: 10px; 
+            margin: 5px; 
+            border: 2px solid #2196f3; 
+        }
+        .child { 
+            background-color: #f3e5f5; 
+            padding: 8px; 
+            margin: 3px; 
+            border: 1px solid #9c27b0; 
+        }
+        .sibling { 
+            background-color: #e8f5e8; 
+            padding: 8px; 
+            margin: 3px; 
+            border: 1px solid #4caf50; 
+        }
+        .highlight { background-color: yellow !important; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <h1>실습 11: DOM 탐색</h1>
+    <p>버튼을 클릭하여 target 요소의 관계를 탐색해보세요.</p>
+    
+    <button id="findParentBtn">부모 찾기</button>
+    <button id="findNextBtn">다음 형제 찾기</button>
+    <button id="findPrevBtn">이전 형제 찾기</button>
+    
+    <div class="family-tree">
+        <div class="parent" id="parent">
+            부모 요소
+            <div class="child" id="child1">첫 번째 자식</div>
+            <div class="child" id="target">타겟 요소</div>
+            <div class="child" id="child2">두 번째 자식</div>
+        </div>
+    </div>
+    
+    <div id="result">탐색 결과가 여기에 표시됩니다</div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const findParentBtn = document.getElementById('findParentBtn');
+        const findNextBtn = document.getElementById('findNextBtn');
+        const findPrevBtn = document.getElementById('findPrevBtn');
+        const target = document.getElementById('target');
+        const result = document.getElementById('result');
+        
+        // findParentBtn: target의 부모 요소를 찾아서 텍스트를 result에 표시
+        findParentBtn.addEventListener('click', function() {
+            const parent = target.parentNode;
+            result.textContent = `부모 요소: ${parent.textContent.trim()}`;
+        });
+        
+        // findNextBtn: target의 다음 형제 요소를 찾아서 텍스트를 result에 표시
+        findNextBtn.addEventListener('click', function() {
+            const nextSibling = target.nextElementSibling;
+            if (nextSibling) {
+                result.textContent = `다음 형제: ${nextSibling.textContent}`;
+            } else {
+                result.textContent = '다음 형제가 없습니다.';
+            }
+        });
+        
+        // findPrevBtn: target의 이전 형제 요소를 찾아서 텍스트를 result에 표시
+        findPrevBtn.addEventListener('click', function() {
+            const prevSibling = target.previousElementSibling;
+            if (prevSibling) {
+                result.textContent = `이전 형제: ${prevSibling.textContent}`;
+            } else {
+                result.textContent = '이전 형제가 없습니다.';
+            }
+        });
+    </script>
+</body>
+</html>

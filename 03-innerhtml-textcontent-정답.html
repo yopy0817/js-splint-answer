@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 스프린트 03 - innerHTML vs textContent</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        .result { margin: 10px; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DOM 스프린트 03 - innerHTML vs textContent</h1>
+        <p>두 버튼의 차이점을 확인해보세요.</p>
+        
+        <button id="innerHTMLBtn">innerHTML 사용</button>
+        <button id="textContentBtn">textContent 사용</button>
+        
+        <div id="result1" class="result">결과 1</div>
+        <div id="result2" class="result">결과 2</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const innerHTMLBtn = document.getElementById('innerHTMLBtn');
+        const textContentBtn = document.getElementById('textContentBtn');
+        const result1 = document.getElementById('result1');
+        const result2 = document.getElementById('result2');
+        
+        // 1. innerHTML은 HTML 태그를 해석합니다
+        innerHTMLBtn.addEventListener('click', function() {
+            result1.innerHTML = '<strong>굵은 텍스트</strong>';
+        });
+        
+        // 2. textContent는 텍스트만 처리합니다
+        textContentBtn.addEventListener('click', function() {
+            result2.textContent = '<strong>굵은 텍스트</strong>';
+        });
+    </script>
+</body>
+</html>

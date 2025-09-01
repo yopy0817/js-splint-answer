@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 스프린트 03 - 키보드 이벤트</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        input { padding: 10px; font-size: 16px; margin: 10px; width: 200px; }
+        #result { margin-top: 20px; padding: 10px; border: 1px solid #ccc; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DOM 스프린트 03 - 키보드 이벤트</h1>
+        <p>입력창에 텍스트를 입력하고 키를 눌러보세요.</p>
+        
+        <input type="text" id="keyInput" placeholder="여기에 텍스트를 입력하세요">
+        <div id="result">키보드 이벤트 결과가 여기에 표시됩니다</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const keyInput = document.getElementById('keyInput');
+        const result = document.getElementById('result');
+        
+        // 1. keydown - 키를 누를 때
+        keyInput.addEventListener('keydown', function(event) {
+            result.textContent = `키 다운: ${event.key}`;
+        });
+        
+        // 2. keyup - 키를 놓을 때
+        keyInput.addEventListener('keyup', function(event) {
+            result.textContent = `키 업: ${event.key}`;
+        });
+        
+        // 3. keypress - 문자 키를 누를 때
+        keyInput.addEventListener('keypress', function(event) {
+            result.textContent = `키 프레스: ${event.key}`;
+        });
+    </script>
+</body>
+</html>

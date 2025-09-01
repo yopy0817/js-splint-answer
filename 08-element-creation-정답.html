@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 8: 요소 생성</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .new-item { 
+            padding: 10px; 
+            margin: 5px 0; 
+            background-color: #f0f0f0; 
+            border-left: 4px solid #007bff;
+        }
+    </style>
+</head>
+<body>
+    <h1>실습 8: 요소 생성</h1>
+    <p>버튼을 클릭하면 새로운 항목이 추가됩니다.</p>
+    
+    <button id="addBtn">항목 추가</button>
+    <div id="itemList">
+        <div class="new-item">기존 항목 1</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const addBtn = document.getElementById('addBtn');
+        const itemList = document.getElementById('itemList');
+        
+        // 순번 카운터
+        let itemCount = 1;
+        
+        // 버튼 클릭 이벤트
+        addBtn.addEventListener('click', function() {
+            // 새 div 요소 생성
+            const newItem = document.createElement('div');
+            
+            // 클래스 추가
+            newItem.classList.add('new-item');
+            
+            // 텍스트 내용 설정
+            newItem.textContent = `새 항목 ${itemCount + 1}`;
+            
+            // 부모 요소에 추가
+            itemList.appendChild(newItem);
+            
+            // 순번 증가
+            itemCount++;
+        });
+    </script>
+</body>
+</html>

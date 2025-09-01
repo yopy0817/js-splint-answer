@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 14: 타이머</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .timer-section {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #fafafa;
+        }
+        .timer-section h2 {
+            color: #555;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .display {
+            font-size: 48px;
+            font-weight: bold;
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-warning {
+            background-color: #ffc107;
+            color: #212529;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+        .status {
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>⏰ 타이머</h1>
+        
+        <!-- 타이머 섹션 -->
+        <div class="timer-section">
+            <h2>⏰ 타이머</h2>
+            <div class="display" id="timerDisplay">00:00</div>
+            <div class="status" id="timerStatus">준비됨</div>
+            <div class="controls">
+                <button class="btn-primary" id="startTimer">시작</button>
+                <button class="btn-warning" id="pauseTimer">일시정지</button>
+                <button class="btn-danger" id="stopTimer">정지</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const timerDisplay = document.getElementById('timerDisplay');
+        const timerStatus = document.getElementById('timerStatus');
+        const startTimer = document.getElementById('startTimer');
+        const pauseTimer = document.getElementById('pauseTimer');
+        const stopTimer = document.getElementById('stopTimer');
+        
+        // 타이머 변수
+        let seconds = 0;
+        let interval = null;
+        let isRunning = false;
+        
+        // 시간 형식 변환 함수
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const remainingSeconds = totalSeconds % 60;
+            
+            const minutesStr = minutes < 10 ? '0' + minutes : minutes;
+            const secondsStr = remainingSeconds < 10 ? '0' + remainingSeconds : remainingSeconds;
+            
+            return `${minutesStr}:${secondsStr}`;
+        }
+        
+        // 타이머 업데이트 함수
+        function updateTimer() {
+            seconds++;
+            timerDisplay.textContent = formatTime(seconds);
+        }
+        
+        // 시작 버튼 이벤트
+        startTimer.addEventListener('click', function() {
+            if (!isRunning) {
+                isRunning = true;
+                interval = setInterval(updateTimer, 1000);
+                timerStatus.textContent = '실행 중';
+            }
+        });
+        
+        // 일시정지 버튼 이벤트
+        pauseTimer.addEventListener('click', function() {
+            if (isRunning) {
+                isRunning = false;
+                clearInterval(interval);
+                timerStatus.textContent = '일시정지';
+            }
+        });
+        
+        // 정지 버튼 이벤트
+        stopTimer.addEventListener('click', function() {
+            isRunning = false;
+            clearInterval(interval);
+            seconds = 0;
+            timerDisplay.textContent = '00:00';
+            timerStatus.textContent = '준비됨';
+        });
+    </script>
+</body>
+</html>
+
+

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 스프린트 05 - 속성 조작</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .container { max-width: 600px; margin: 0 auto; }
+        button { padding: 10px 20px; margin: 10px; font-size: 16px; }
+        img { max-width: 200px; margin: 10px; }
+        .box { padding: 20px; border: 2px solid #333; margin: 10px; }
+        .box.highlighted { border : 3px solid #00ffff }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>DOM 스프린트 05 - 속성 조작</h1>
+        <p>버튼을 클릭하여 이미지와 링크의 속성을 변경해보세요.</p>
+        
+        <button id="changeImgBtn">이미지 변경</button>
+        <button id="changeLinkBtn">링크 변경</button>
+        <button id="changeClassBtn">클래스 변경</button>
+        
+        <img id="myImage" src="img/1.jpg" alt="이미지">
+        <a id="myLink" href="https://www.google.com">구글 링크</a>
+        <div id="myBox" class="box">박스 내용</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const changeImgBtn = document.getElementById('changeImgBtn');
+        const changeLinkBtn = document.getElementById('changeLinkBtn');
+        const changeClassBtn = document.getElementById('changeClassBtn');
+        const myImage = document.getElementById('myImage');
+        const myLink = document.getElementById('myLink');
+        const myBox = document.getElementById('myBox');
+        
+        // 1. element.src = '새로운URL'로 이미지 변경
+        changeImgBtn.addEventListener('click', function() {
+            myImage.src = 'img/2.jpg';
+        });
+        
+        // 2. element.href = '새로운URL'로 링크 변경
+        changeLinkBtn.addEventListener('click', function() {
+            myLink.href = 'https://www.naver.com';
+            myLink.textContent = '네이버 링크';
+        });
+        
+        // 3. element.className = '새로운클래스'로 클래스 변경
+        changeClassBtn.addEventListener('click', function() {
+            myBox.className = 'box highlighted';
+        });
+    </script>
+</body>
+</html>

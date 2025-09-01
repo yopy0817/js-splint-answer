@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 9: 요소 추가</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        button { padding: 10px 20px; margin: 10px; }
+        .list { border: 1px solid #ccc; padding: 10px; margin: 10px; }
+        .item { 
+            background-color: #f0f0f0; 
+            padding: 8px; 
+            margin: 5px; 
+            border-radius: 4px; 
+        }
+        .new-item { 
+            background-color: #e8f5e8; 
+            border-left: 3px solid green; 
+        }
+    </style>
+</head>
+<body>
+    <h1>실습 9: 요소 추가</h1>
+    <p>버튼을 클릭하여 요소를 다양한 위치에 추가해보세요.</p>
+    
+    <button id="appendBtn">맨 뒤에 추가</button>
+    <button id="prependBtn">맨 앞에 추가</button>
+    <button id="insertBtn">중간에 추가</button>
+    
+    <div id="list" class="list">
+        <div class="item">기존 아이템 1</div>
+        <div class="item">기존 아이템 2</div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const appendBtn = document.getElementById('appendBtn');
+        const prependBtn = document.getElementById('prependBtn');
+        const insertBtn = document.getElementById('insertBtn');
+        const list = document.getElementById('list');
+        
+        // appendBtn: 리스트 맨 뒤에 "새 아이템 (뒤)" 추가
+        appendBtn.addEventListener('click', function() {
+            const newItem = document.createElement('div');
+            newItem.className = 'item new-item';
+            newItem.textContent = '새 아이템 (뒤)';
+            list.appendChild(newItem);
+        });
+        
+        // prependBtn: 리스트 맨 앞에 "새 아이템 (앞)" 추가  
+        prependBtn.addEventListener('click', function() {
+            const newItem = document.createElement('div');
+            newItem.className = 'item new-item';
+            newItem.textContent = '새 아이템 (앞)';
+            list.insertBefore(newItem, list.firstChild);
+        });
+        
+        // insertBtn: 첫 번째 아이템 뒤에 "새 아이템 (중간)" 추가
+        insertBtn.addEventListener('click', function() {
+            const newItem = document.createElement('div');
+            newItem.className = 'item new-item';
+            newItem.textContent = '새 아이템 (중간)';
+            const firstItem = list.querySelector('.item');
+            list.insertBefore(newItem, firstItem.nextSibling);
+        });
+    </script>
+</body>
+</html>

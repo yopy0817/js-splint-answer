@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 13: 로컬 스토리지 관리</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #007bff;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .btn-danger {
+            background-color: #dc3545;
+        }
+        .btn-danger:hover {
+            background-color: #c82333;
+        }
+        .btn-success {
+            background-color: #28a745;
+        }
+        .btn-success:hover {
+            background-color: #218838;
+        }
+        .note-list {
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .note-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .note-item:last-child {
+            border-bottom: none;
+        }
+        .note-content {
+            flex: 1;
+        }
+        .note-title {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .note-text {
+            color: #666;
+            font-size: 14px;
+        }
+        .note-date {
+            color: #999;
+            font-size: 12px;
+        }
+        .note-actions {
+            display: flex;
+            gap: 5px;
+        }
+        .empty-message {
+            padding: 20px;
+            text-align: center;
+            color: #999;
+            font-style: italic;
+        }
+        .storage-info {
+            background-color: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>메모장 (로컬 스토리지)</h1>
+        
+        <div class="storage-info">
+            <strong>로컬 스토리지 상태:</strong> 
+            <span id="storageStatus">확인 중...</span>
+        </div>
+
+        <form id="noteForm">
+            <div class="form-group">
+                <label for="noteTitle">제목</label>
+                <input type="text" id="noteTitle" name="title" placeholder="메모 제목을 입력하세요" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="noteText">내용</label>
+                <textarea id="noteText" name="text" rows="4" placeholder="메모 내용을 입력하세요" required></textarea>
+            </div>
+            
+            <button type="submit">메모 저장</button>
+            <button type="button" id="clearAllBtn" class="btn-danger">모든 메모 삭제</button>
+            <button type="button" id="exportBtn" class="btn-success">메모 내보내기</button>
+        </form>
+
+        <div class="note-list" id="noteList">
+            <div class="empty-message">저장된 메모가 없습니다.</div>
+        </div>
+    </div>
+
+    <script>
+        // 정답 코드
+        
+        // 요소 선택
+        const noteForm = document.getElementById('noteForm');
+        const noteTitle = document.getElementById('noteTitle');
+        const noteText = document.getElementById('noteText');
+        const noteList = document.getElementById('noteList');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const exportBtn = document.getElementById('exportBtn');
+        const storageStatus = document.getElementById('storageStatus');
+        
+        // 로컬 스토리지 키
+        const STORAGE_KEY = 'notes';
+        
+        // 로컬 스토리지 상태 확인
+        function checkStorageStatus() {
+            try {
+                localStorage.setItem('test', 'test');
+                localStorage.removeItem('test');
+                storageStatus.textContent = '사용 가능';
+                storageStatus.style.color = '#28a745';
+            } catch (e) {
+                storageStatus.textContent = '사용 불가능';
+                storageStatus.style.color = '#dc3545';
+            }
+        }
+        
+        // 메모 목록 가져오기
+        function getNotes() {
+            const notes = localStorage.getItem(STORAGE_KEY);
+            return notes ? JSON.parse(notes) : [];
+        }
+        
+        // 메모 목록 저장하기
+        function saveNotes(notes) {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(notes));
+        }
+        
+        // 메모 목록 표시하기
+        function displayNotes() {
+            const notes = getNotes();
+            
+            if (notes.length === 0) {
+                noteList.innerHTML = '<div class="empty-message">저장된 메모가 없습니다.</div>';
+                return;
+            }
+            
+            noteList.innerHTML = '';
+            
+            notes.forEach((note, index) => {
+                const noteItem = document.createElement('div');
+                noteItem.className = 'note-item';
+                
+                const noteContent = document.createElement('div');
+                noteContent.className = 'note-content';
+                
+                const noteTitleElement = document.createElement('div');
+                noteTitleElement.className = 'note-title';
+                noteTitleElement.textContent = note.title;
+                
+                const noteTextElement = document.createElement('div');
+                noteTextElement.className = 'note-text';
+                noteTextElement.textContent = note.text;
+                
+                const noteDateElement = document.createElement('div');
+                noteDateElement.className = 'note-date';
+                noteDateElement.textContent = new Date(note.date).toLocaleString();
+                
+                noteContent.appendChild(noteTitleElement);
+                noteContent.appendChild(noteTextElement);
+                noteContent.appendChild(noteDateElement);
+                
+                const noteActions = document.createElement('div');
+                noteActions.className = 'note-actions';
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'btn-danger';
+                deleteBtn.textContent = '삭제';
+                deleteBtn.onclick = () => deleteNote(index);
+                
+                noteActions.appendChild(deleteBtn);
+                
+                noteItem.appendChild(noteContent);
+                noteItem.appendChild(noteActions);
+                
+                noteList.appendChild(noteItem);
+            });
+        }
+        
+        // 메모 삭제하기
+        function deleteNote(index) {
+            const notes = getNotes();
+            notes.splice(index, 1);
+            saveNotes(notes);
+            displayNotes();
+        }
+        
+        // 폼 제출 이벤트
+        noteForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const title = noteTitle.value.trim();
+            const text = noteText.value.trim();
+            
+            if (!title || !text) {
+                alert('제목과 내용을 모두 입력해주세요.');
+                return;
+            }
+            
+            const notes = getNotes();
+            const newNote = {
+                title: title,
+                text: text,
+                date: new Date().toISOString()
+            };
+            
+            notes.push(newNote);
+            saveNotes(notes);
+            displayNotes();
+            
+            // 폼 초기화
+            noteForm.reset();
+        });
+        
+        // 모든 메모 삭제
+        clearAllBtn.addEventListener('click', function() {
+            if (confirm('모든 메모를 삭제하시겠습니까?')) {
+                localStorage.removeItem(STORAGE_KEY);
+                displayNotes();
+            }
+        });
+        
+        // 메모 내보내기
+        exportBtn.addEventListener('click', function() {
+            const notes = getNotes();
+            if (notes.length === 0) {
+                alert('내보낼 메모가 없습니다.');
+                return;
+            }
+            
+            const dataStr = JSON.stringify(notes, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            const url = URL.createObjectURL(dataBlob);
+            
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'memos.json';
+            link.click();
+            
+            URL.revokeObjectURL(url);
+        });
+        
+        // 초기화
+        checkStorageStatus();
+        displayNotes();
+    </script>
+</body>
+</html>
+
+

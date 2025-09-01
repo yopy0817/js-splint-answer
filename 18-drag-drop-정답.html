@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실습 18: 드래그 앤 드롭 - 정답</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            color: #333; 
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .workspace {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        .panel {
+            background-color: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 20px;
+            min-height: 300px;
+        }
+        .panel.drag-over {
+            border-color: #007bff;
+            background-color: #e3f2fd;
+        }
+        .panel h2 {
+            text-align: center;
+            color: #555;
+            margin-bottom: 20px;
+        }
+        .draggable-item {
+            background-color: #007bff;
+            color: white;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+            cursor: grab;
+            user-select: none;
+        }
+        .draggable-item.dragging {
+            opacity: 0.5;
+        }
+        .draggable-item.dropped {
+            background-color: #28a745;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .btn-primary { background-color: #007bff; color: white; }
+        .btn-success { background-color: #28a745; color: white; }
+        .empty-message {
+            text-align: center;
+            color: #999;
+            font-style: italic;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔄 드래그 앤 드롭</h1>
+        
+        <div class="workspace">
+            <div class="panel" id="sourcePanel">
+                <h2>📦 원본 항목들</h2>
+                <div class="draggable-item" draggable="true" data-id="1">📱 스마트폰</div>
+                <div class="draggable-item" draggable="true" data-id="2">💻 노트북</div>
+                <div class="draggable-item" draggable="true" data-id="3">🎧 헤드폰</div>
+            </div>
+
+            <div class="panel" id="targetPanel">
+                <h2>🎯 대상 영역</h2>
+                <div class="empty-message">여기로 항목을 드래그하세요</div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn-primary" id="resetBtn">모든 항목 리셋</button>
+            <button class="btn-success" id="clearTargetBtn">대상 영역 비우기</button>
+        </div>
+    </div>
+
+    <script>
+        // 요소 선택
+        const sourcePanel = document.getElementById('sourcePanel');
+        const targetPanel = document.getElementById('targetPanel');
+        const resetBtn = document.getElementById('resetBtn');
+        const clearTargetBtn = document.getElementById('clearTargetBtn');
+        
+        // 원본 HTML 저장
+        const originalSourceHTML = sourcePanel.innerHTML;
+        const originalTargetHTML = targetPanel.innerHTML;
+        
+        // 드래그 이벤트
+        // dragover와 drop만 사용하여 최소한의 드래그 앤 드롭 구현
+        
+        // 드래그 중인 항목 저장 변수
+        let draggedItem = null;
+        
+        // 드래그 시작 시 항목 저장
+        document.addEventListener('dragstart', e => {
+            if (e.target.classList.contains('draggable-item')) {
+                draggedItem = e.target;
+            }
+        });
+        
+        // 드롭 영역 이벤트
+        targetPanel.addEventListener('dragover', e => {
+            e.preventDefault(); // 필수: drop 이벤트를 발생시키기 위해 필요
+        });
+        
+        targetPanel.addEventListener('drop', e => {
+            e.preventDefault(); // 필수: 기본 동작 방지
+            
+            if (draggedItem) {
+                // 빈 메시지 제거
+                const emptyMessage = targetPanel.querySelector('.empty-message');
+                if (emptyMessage) emptyMessage.remove();
+                
+                // 드롭된 항목을 대상 영역으로 이동
+                targetPanel.appendChild(draggedItem);
+            }
+        });
+        
+        // 컨트롤 버튼
+        resetBtn.addEventListener('click', () => {
+            sourcePanel.innerHTML = originalSourceHTML;
+            targetPanel.innerHTML = originalTargetHTML;
+        });
+        
+        clearTargetBtn.addEventListener('click', () => {
+            targetPanel.innerHTML = originalTargetHTML;
+        });
+    </script>
+</body>
+</html>

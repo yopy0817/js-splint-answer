@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DOM 퀴즈 정답 가이드</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 300;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .intro {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+
+        .intro h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+
+        .intro p {
+            color: #666;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .quiz-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 40px;
+        }
+
+        .quiz-card {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            width: 350px;
+            flex-shrink: 0;
+        }
+
+        .quiz-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+        }
+
+        .quiz-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz-card .icon {
+            font-size: 1.5rem;
+        }
+
+        .quiz-card .description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .quiz-card .concepts {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #495057;
+        }
+
+        .quiz-card .concepts strong {
+            color: #667eea;
+        }
+
+        .footer {
+            background: #f8f9fa;
+            padding: 30px;
+            text-align: center;
+            border-top: 1px solid #e9ecef;
+        }
+
+        .footer h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .footer ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: #667eea;
+            text-decoration: none;
+            padding: 8px 16px;
+            border: 1px solid #667eea;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .footer a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .quiz-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>DOM 퀴즈 정답 가이드</h1>
+            <p>JavaScript DOM 조작과 이벤트 스플린트 문제</p>
+        </div>
+
+        <div class="content">
+            <div class="intro">
+                <h2>🎯 학습 목표</h2>
+                <p>
+                    이 스프린트 퀴즈를 통해, DOM조작 능력을 학습합니다.
+                </p>
+            </div>
+
+            <div class="quiz-grid">
+                <a href="01-basic-events-정답.html" class="quiz-card">
+                    <h3><span class="icon">🖱️</span>01. Basic Events</h3>
+                    <div class="description">기본 이벤트 처리와 DOM 조작</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> addEventListener, click 이벤트</div>
+                </a>
+
+                <a href="02-mouse-events-정답.html" class="quiz-card">
+                    <h3><span class="icon">🖱️</span>02. Mouse Events</h3>
+                    <div class="description">마우스 이벤트 처리와 호버 효과</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> mouseenter, mouseleave, mousedown, mouseup</div>
+                </a>
+
+                <a href="03-innerhtml-textcontent-정답.html" class="quiz-card">
+                    <h3><span class="icon">📝</span>03. innerHTML vs textContent</h3>
+                    <div class="description">HTML 태그 처리 방식의 차이점</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> innerHTML, textContent 속성</div>
+                </a>
+
+                <a href="04-keyboard-events-정답.html" class="quiz-card">
+                    <h3><span class="icon">⌨️</span>04. Keyboard Events</h3>
+                    <div class="description">키보드 입력 감지와 처리</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> keydown, keyup, keypress</div>
+                </a>
+
+                <a href="05-attribute-manipulation-정답.html" class="quiz-card">
+                    <h3><span class="icon">🔧</span>05. Attribute Manipulation</h3>
+                    <div class="description">HTML 속성 동적 변경</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> getAttribute, setAttribute, removeAttribute</div>
+                </a>
+
+                <a href="06-style-manipulation-정답.html" class="quiz-card">
+                    <h3><span class="icon">🎨</span>06. Style Manipulation</h3>
+                    <div class="description">CSS 스타일 동적 제어</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> style 속성, CSS 속성 직접 조작</div>
+                </a>
+
+                <a href="07-class-manipulation-정답.html" class="quiz-card">
+                    <h3><span class="icon">🏷️</span>07. Class Manipulation</h3>
+                    <div class="description">CSS 클래스 추가/제거/토글</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> classList.add(), classList.remove(), classList.toggle()</div>
+                </a>
+
+                <a href="08-element-creation-정답.html" class="quiz-card">
+                    <h3><span class="icon">➕</span>08. Element Creation</h3>
+                    <div class="description">새로운 DOM 요소 동적 생성</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> createElement(), createTextNode()</div>
+                </a>
+
+                <a href="09-element-addition-정답.html" class="quiz-card">
+                    <h3><span class="icon">📎</span>09. Element Addition</h3>
+                    <div class="description">DOM에 새 요소 추가</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> appendChild(), insertBefore(), append()</div>
+                </a>
+
+                <a href="10-element-removal-정답.html" class="quiz-card">
+                    <h3><span class="icon">🗑️</span>10. Element Removal</h3>
+                    <div class="description">DOM 요소 제거</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> removeChild(), remove(), parentNode</div>
+                </a>
+
+                <a href="11-dom-traversal-정답.html" class="quiz-card">
+                    <h3><span class="icon">🔍</span>11. DOM Traversal</h3>
+                    <div class="description">DOM 트리 구조 탐색</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> parentNode, childNodes, nextSibling, previousSibling</div>
+                </a>
+
+                <a href="12-form-validation-정답.html" class="quiz-card">
+                    <h3><span class="icon">✅</span>12. Form Validation</h3>
+                    <div class="description">사용자 입력 검증과 에러 처리</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> form 요소, input 이벤트, 유효성 검사</div>
+                </a>
+
+                <a href="13-local-storage-정답.html" class="quiz-card">
+                    <h3><span class="icon">💾</span>13. Local Storage</h3>
+                    <div class="description">브라우저에 데이터 저장/불러오기</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> localStorage.setItem(), localStorage.getItem()</div>
+                </a>
+
+                <a href="14-timer-counter-정답.html" class="quiz-card">
+                    <h3><span class="icon">⏱️</span>14. Timer & Counter</h3>
+                    <div class="description">시간 기반 기능과 카운터</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> setInterval(), clearInterval(), setTimeout()</div>
+                </a>
+
+                <a href="15-modal-popup-정답.html" class="quiz-card">
+                    <h3><span class="icon">🪟</span>15. Modal Popup</h3>
+                    <div class="description">모달 창 표시/숨김과 배경 처리</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> display 스타일, z-index, 이벤트 위임</div>
+                </a>
+
+                <a href="16-todo-list-정답.html" class="quiz-card">
+                    <h3><span class="icon">📋</span>16. Todo List</h3>
+                    <div class="description">할 일 추가/삭제/완료 처리</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> 배열 조작, 동적 요소 생성, 이벤트 위임</div>
+                </a>
+
+                <a href="17-carousel-정답.html" class="quiz-card">
+                    <h3><span class="icon">🖼️</span>17. Carousel</h3>
+                    <div class="description">이미지 슬라이드 쇼와 네비게이션</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> 인덱스 관리, 이미지 전환, 자동 재생</div>
+                </a>
+
+                <a href="18-drag-drop-정답.html" class="quiz-card">
+                    <h3><span class="icon">🔄</span>18. Drag & Drop</h3>
+                    <div class="description">요소 드래그와 드롭 영역 처리</div>
+                    <div class="concepts"><strong>사용된 개념:</strong> dragstart, dragover, drop 이벤트</div>
+                </a>
+
+            </div>
+        </div>
+
+        <div class="footer">
+            <h3>📚 참고 자료</h3>
+            <ul>
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/API/Document_Object_Model" target="_blank">MDN - DOM</a></li>
+                <li><a href="https://developer.mozilla.org/ko/docs/Web/Events" target="_blank">MDN - 이벤트</a></li>
+                <li><a href="https://www.w3schools.com/js/js_htmldom.asp" target="_blank">W3Schools - DOM</a></li>
+                <li><a href="README.md" target="_blank">상세 가이드</a></li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
