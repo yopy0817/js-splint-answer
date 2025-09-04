@@ -42,7 +42,7 @@
         <div class="parent" id="parent">
             부모 요소
             <div class="child" id="child1">첫 번째 자식</div>
-            <div class="child" id="target">타겟 요소</div>
+            <div class="child" id="target"><b>타겟 요소(이 기준으로 처리하면됩니다)</b></div>
             <div class="child" id="child2">두 번째 자식</div>
         </div>
     </div>
@@ -59,27 +59,41 @@
         const target = document.getElementById('target');
         const result = document.getElementById('result');
         
-        // findParentBtn: target의 부모 요소를 찾아서 텍스트를 result에 표시
+        // 모든 하이라이트 제거 함수
+        function clearAllHighlights() {
+            const allElements = document.querySelectorAll('.parent, .child');
+            allElements.forEach(element => {
+                element.classList.remove('highlight');
+            });
+        }
+        
+        // findParentBtn: target의 부모 요소를 찾아서 하이라이트하고 텍스트를 result에 표시
         findParentBtn.addEventListener('click', function() {
+            clearAllHighlights();
             const parent = target.parentNode;
-            result.textContent = `부모 요소: ${parent.textContent.trim()}`;
+            parent.classList.add('highlight');
+            result.textContent = `부모 요소를 찾았습니다: "${parent.textContent.trim()}"`;
         });
         
-        // findNextBtn: target의 다음 형제 요소를 찾아서 텍스트를 result에 표시
+        // findNextBtn: target의 다음 형제 요소를 찾아서 하이라이트하고 텍스트를 result에 표시
         findNextBtn.addEventListener('click', function() {
+            clearAllHighlights();
             const nextSibling = target.nextElementSibling;
             if (nextSibling) {
-                result.textContent = `다음 형제: ${nextSibling.textContent}`;
+                nextSibling.classList.add('highlight');
+                result.textContent = `다음 형제를 찾았습니다: "${nextSibling.textContent}"`;
             } else {
                 result.textContent = '다음 형제가 없습니다.';
             }
         });
         
-        // findPrevBtn: target의 이전 형제 요소를 찾아서 텍스트를 result에 표시
+        // findPrevBtn: target의 이전 형제 요소를 찾아서 하이라이트하고 텍스트를 result에 표시
         findPrevBtn.addEventListener('click', function() {
+            clearAllHighlights();
             const prevSibling = target.previousElementSibling;
             if (prevSibling) {
-                result.textContent = `이전 형제: ${prevSibling.textContent}`;
+                prevSibling.classList.add('highlight');
+                result.textContent = `이전 형제를 찾았습니다: "${prevSibling.textContent}"`;
             } else {
                 result.textContent = '이전 형제가 없습니다.';
             }
