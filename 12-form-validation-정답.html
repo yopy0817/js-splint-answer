@@ -244,7 +244,7 @@
             if (confirmValue === '') {
                 confirmPassword.classList.remove('error', 'success');
                 hideError('confirmPassword');
-                return true;
+                return false;
             }
             
             if (passwordValue === confirmValue) {
